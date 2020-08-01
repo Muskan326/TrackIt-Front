@@ -1,0 +1,188 @@
+<br><marquee behavior="alternate" scrollamount="3">&nbsp;&nbsp;&nbsp;Note: &nbsp;&nbsp;Issue Reporters can update all the fields.&nbsp;&nbsp;&nbsp;Asignee can update state,asignee and add a comment or attachment. &nbsp;&nbsp;&nbsp;All other users can only add a new comment.&nbsp;&nbsp;&nbsp;</marquee>
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-md-6 col-sm-11 box-border">
+      <h2 class="form-edit-issue">Edit The Issue</h2>
+      <br>
+      <form  *ngIf=(isAuthor) #createForm="ngForm" (ngSubmit)="EditIssue()">
+
+        <span>Title: </span>
+        <label for="inputTittle" class="sr-only">Title</label>
+        <input type="text" name="title" id="inputTitle" class="form-control" [(ngModel)]="issue.title"
+          placeholder="Title" required  autofocus>
+        <br>
+
+        <span>Description: </span>
+        <label for="inputDescription" class="sr-only">Description</label>
+        <angular-editor id="desc" [config]="editorConfig"  placeholder="Text here" name="description" [(ngModel)]="issue.description" height="400px"required></angular-editor>
+        <br>
+
+        <span>State:</span>
+        <label for="inputAssignTo" class="sr-only">Assign To</label>
+        <select name="state" [(ngModel)]="issue.state" required>
+          <option *ngFor="let each of states" [value]="each" ng-selected={{issue.state}}>{{each}}</option>
+        </select>
+        <br>
+        <br>
+
+        <span>Comments:</span>
+        <h4 *ngIf="allComments=='No Comments'">No Comments To show</h4>
+        <table *ngIf="allComments!='No Comments'" class="table  table-success">
+          <thead>
+            <tr>
+              <th>Comment</th>
+              <th>Added By</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tr *ngFor="let each of allComments"><td style="width:50%">{{each.comment}}</td><td style="width:25%">{{each.userId}}</td><td style="width:25%">{{each.date|date}}</td><td ><span class="material-icons" on-click="deleteComment(each.commentId)">delete_forever</span></td></tr>
+        </table>
+        <br>
+        <span>New Comment: </span>
+        <label for="inputComments" class="sr-only">Comments</label>
+        <input type="textbox" style="height:4rem" name="newcomment" id="inputComments" class="form-control" [(ngModel)]="newcomment"
+          placeholder="Comments" required >
+        <br>
+        <span>Assign To: </span>
+        <label for="inputAssignTo" class="sr-only">Assign To</label>
+        <select name="assignedTo"  [(ngModel)]="issue.assignedTo" required>
+          <option *ngFor="let user of allUsers" [value]="user.name" ng-selected={{issue.assignedTo}}>{{user.name}}</option>
+      </select>
+        <br>
+        <br>
+        <span>Attachments: </span>
+        <label for="attachments" class="sr-only">Attachments</label>
+        <h4 *ngIf="issue.files.length==0">No Attachments To show</h4>
+        <div class="row">
+          <div class="col-6">
+        <table class="table  table-success">
+          <tr *ngFor="let each of issue.files"><td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{each.key}}">{{each.name}}</a></td><td ><span class="material-icons" on-click="deleteFile(each.key)">delete_forever</span></td></tr>
+        </table>
+      </div>
+      </div>
+        <input (change)="onImagePicked($event)" on-click="this.toastr.infoToastr('You can select multiple Files')" placeholder="Upload Image" type="file" multiple/>
+        <br><br>
+        <div *ngIf="allfiles!=undefined && allfiles.length>0" >
+          <table class="table-success">
+            <th>All Attached File List</th>
+            <tr *ngFor="let file of allfiles">
+            <td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{file.name}}">{{file.name}}</a></td>
+          </tr>
+          </table>                    
+        </div>
+        <br>
+
+        <div class="row">
+          <div class="col-md-5">
+        
+            <a class="btn btn-dark"  (click)="openModal(templateEdit)">Save Changes</a>
+            <ng-template #templateEdit>
+              <div class="modal-body text-center">
+                <p>Do you want to save the changes?</p>
+                <button type="button" class="btn btn-dark" (click)="confirmEdit()" >Yes</button>
+                <button type="button" class="btn btn-dark" (click)="decline()" >No</button>
+              </div>
+            </ng-template>         
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5"><a class="btn  btn-dark" type="button" (click)="goBack()">Go Back</a></div>
+        </div>
+        
+      </form>
+
+
+      
+
+
+      <form  *ngIf=(!isAuthor) #createForm="ngForm" (ngSubmit)="EditIssue()">
+
+        <span>Title: </span>
+        <label for="inputTittle" class="sr-only">Title</label>
+        <input type="text" name="title" id="inputTitle" class="form-control" [(ngModel)]="issue.title"
+          placeholder="Title" disabled>
+        <br>
+
+        <span>Description: </span>
+        <label for="inputDescription" class="sr-only">Description</label>
+        <p id="description"></p>
+        <br>
+
+        <span>State:</span>
+        <label for="inputAssignTo" class="sr-only">Assign To</label>
+        <select *ngIf="(userId==assignedId)" name="state" [(ngModel)]="issue.state" required>
+          <option *ngFor="let each of states" [value]="each" ng-selected={{issue.state}}>{{each}}</option>
+        </select>
+        <input *ngIf="(userId!=assignedId)" type="text" name="state" [(ngModel)]="issue.state" disabled>
+        <br>
+        <br>
+
+        <span>Comments:</span>
+        <h4 *ngIf="allComments=='No Comments'">No Comments To show</h4>
+        <table *ngIf="allComments!='No Comments'" class="table  table-success">
+          <thead>
+            <tr>
+              <th>Comment</th>
+              <th>Added By</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tr *ngFor="let each of allComments"><td style="width:50%">{{each.comment}}</td><td style="width:25%">{{each.userId}}</td><td style="width:25%">{{each.date|date}}</td></tr>
+        </table>
+        <br>
+        <span>New Comment: </span>
+        <label for="inputComments" class="sr-only">Comments</label>
+        <input type="textbox" style="height:4rem" name="newcomment" id="inputComments" class="form-control" [(ngModel)]="newcomment"
+          placeholder="Comments" required >
+        <br>
+        <span>Assign To: </span>
+        <label for="inputAssignTo" class="sr-only">Assign To</label>
+        <select *ngIf="(userId==assignedId)" name="assignedTo"  [(ngModel)]="issue.assignedTo" required>
+          <option *ngFor="let user of allUsers" [value]="user.name" ng-selected={{issue.assignedTo}}>{{user.name}}</option>
+      </select>
+      <input *ngIf="(userId!=assignedId)" type=text name="assignedTo" [(ngModel)]="issue.assignedTo" disabled>
+        <br>
+        <br>
+        <span>Attachments: </span>
+        <label for="attachments" class="sr-only">Attachments</label>
+        <h4 *ngIf="issue.files.length==0">No Attachments To show</h4>
+        <div class="row">
+          <div class="col-6">
+        <table class="table  table-success">
+          <tr *ngFor="let each of issue.files"><td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{each.key}}">{{each.name}}</a></td></tr>
+        </table>
+      </div>
+      </div>
+      <input *ngIf="(userId==assignedId)" (change)="onImagePicked($event)" on-click="this.toastr.infoToastr('You can select multiple Files')" placeholder="Upload Image" type="file" multiple/>
+      <br><br>
+      <div *ngIf="allfiles!=undefined && allfiles.length>0" >
+        <table class="table-success">
+          <th>All Attached File List</th>
+          <tr *ngFor="let file of allfiles">
+          <td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{file.name}}">{{file.name}}</a></td>
+        </tr>
+        </table>                    
+      </div>
+        <br>
+
+        <div class="row">
+          <div class="col-md-5">
+        
+            <a class="btn btn-dark"  (click)="openModal(templateEdit)">Save Changes</a>
+            <ng-template #templateEdit>
+              <div class="modal-body text-center">
+                <p>Do you want to save the changes?</p>
+                <button type="button" class="btn btn-dark" (click)="confirmEdit()" >Yes</button>
+                <button type="button" class="btn btn-dark" (click)="decline()" >No</button>
+              </div>
+            </ng-template>         
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5"><a class="btn  btn-dark" type="button" (click)="goBack()">Go Back</a></div>
+        </div>
+        
+      </form>
+
+    </div>
+
+    <div class="col-3"></div>
+  </div>

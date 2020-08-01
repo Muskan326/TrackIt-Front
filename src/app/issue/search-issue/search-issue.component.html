@@ -1,0 +1,46 @@
+<div class="searchView">
+
+<div class="row">
+  <div class="col-md-4"></div>
+<div class="col-md-4 searchBar">
+  Enter text to Find related Issues
+  <br><br>
+<input type="text" class="form-control" name="searchText" [(ngModel)]="searchText" placeholder="Enter Search text"  autofocus>
+</div> 
+<div class="col-md-4"></div>
+</div>               
+
+
+
+<div class="row" style="text-align:center">
+    <div class="col-md-2"></div>
+    <table class="col-md-8 table-bordered table-hover" id="My-Table">
+      <thead>
+        <tr>
+          <th scope="col" on-click="sortTable(0)">Title</th>
+          <th scope="col" on-click="sortTable(1)">Status</th>
+          <th scope="col" on-click="sortTable(2)">Reporter</th>
+          <th scope="col" on-click="sortTable(3)">Assigned To</th>
+          <th scope="col" on-click="sortTable(4)">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let issue of allIssues | filter:searchText |paginate: { id:'All-table', itemsPerPage:5, currentPage:p }"
+        [routerLink]="['/view',issue.issueId]">
+          <td>{{issue.title}}</td>
+          <td>{{issue.state}}</td>
+          <td>{{issue.author}}</td>
+          <td>{{issue.assignedTo}}</td>
+          <td>{{issue.created|date}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-md-2"></div>
+    <div class="pagination text-center">
+    <pagination-controls id='All-table' (pageChange)="pageChanged($event)" directionLinks="true"
+      autoHide="false" responsive="true" previousLabel="Previous" nextLabel="Next"
+      screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls></div>
+  </div> 
+  </div>

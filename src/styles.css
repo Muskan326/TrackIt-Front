@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.box-border{
+    border-style:outset;
+    border-radius: 2rem;
+    border-color: black;
+    padding: 2rem 2rem 2rem 2rem; 
+    box-shadow: 0.4rem 0.4rem #888888;
+}
+
+.btn{
+    color: #fff;
+}
+
+.btn:hover{
+    color:#fff
+}
+
+.modal-button{
+    color:white;
+    margin:0rem 2rem 0rem 2rem
+}
+.searchbar{
+    margin:0.5rem 0rem 0.5rem 0rem;
+    width:12rem;
+
+}
+#headernav{
+    background-color: #E8F8F5;
+}
+.material-icons{
+    font-size:1.5rem;
+    margin:0rem 0.5rem 0rem 0.5rem;
+}

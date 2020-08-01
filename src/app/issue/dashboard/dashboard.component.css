@@ -1,0 +1,140 @@
+.userHeader{
+    height:1rem;
+    background-color:#138D75 ;
+}
+.user{
+    height:4rem;
+    background-color:#138D75 ;
+    font-size: 1rem;
+    padding: 1rem 1rem 1rem 1rem;
+}
+.name,.form-class,.issues{
+    font-size: 1.5rem;
+    font-family: serif;
+    font-weight: 600;
+    font-style: oblique;
+}
+tabset{
+    font-size:medium;
+}
+
+.FileUpload{
+    margin-bottom: 2rem;
+}
+.NoNotify{
+    font-size: xx-large;
+    opacity: 0.5;
+}
+
+.notify{
+text-align:right;
+}
+
+.modal-button{
+    color: white;
+    margin:1rem 2rem 1frem 2rem
+}
+.detail-table{
+    margin: 2rem 1rem 2rem 1rem;
+}
+
+.notification{
+    text-align: center;
+    background-color:#138D75 ;
+    color: white;
+    margin: 2rem 1rem 2rem 1rem;
+}
+.dashboard{
+    overflow: hidden;
+}
+
+
+:host /deep/ angular-editor #insertImage-desc ,:host /deep/ angular-editor #insertVideo-desc,:host /deep/ angular-editor #link-desc,:host /deep/ angular-editor #unlink-desc{
+    display: none;
+}
+
+
+ .col-md-12 {
+    margin: 2rem 0rem 0rem 0rem;
+}
+span{
+    font-size:large;
+}
+.lodge-Form{
+    text-align: center;
+}
+thead tr th{
+    padding-top:1rem
+}
+.form-class{
+    text-align: left;
+}
+
+.input-res
+{
+  width: 80%;
+  box-sizing: border-box; 
+}
+
+
+.table-hover{
+    background-color: #E8F8F5;
+    margin:1rem;
+}
+
+
+
+.ng-valid[required], .ng-valid.required{
+    border-left: 0.1rem solid green;
+}
+
+.ng-invalid:not(form){
+    border-left: 0.1rem solid red;
+}
+
+.text-right{
+    background-color: #E8F8F5;
+}
+
+td,th{
+    width:20%;
+    padding:  1rem 0rem 1rem 0rem ;
+}
+
+.pagination {
+    position: relative;
+    bottom:0px;
+    right:45%;
+    left:20%;
+  }
+
+  
+
+  @media screen and (max-width: 768px) {
+    div.notification{
+     display: none;
+}
+  }
+
+  @media screen and (min-width:769px){
+      button.notify{
+          display: none;
+      }
+      div.username{
+          height:3rem
+      }
+  }
+  @media screen and (max-width:330px){
+    table.table-hover{
+        margin:1rem 0rem 0rem 1rem
+    }
+    td,th{
+        padding:0.5rem 0rem 0.5rem 0rem
+    }
+}
+
+  @media screen and (max-width:288px){
+      div.username{
+          height:5rem
+      }
+  }

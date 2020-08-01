@@ -1,0 +1,27 @@
+.signup{
+    overflow: hidden;
+}
+.btn{
+    border: solid;
+}
+
+.ng-valid[required], .ng-valid.required{
+    border-left: 0.1rem solid green;
+}
+
+.ng-invalid:not(form){
+    border-left: 0.1rem solid red;
+}
+
+form{
+    border-style:outset;
+    border-radius: 2rem;
+    border-color: black;
+    padding: 2rem 2rem 2rem 2rem; 
+    box-shadow: 0.4rem 0.4rem #888888;
+}
+@media screen and (max-width:578px){
+    div.signup{
+        margin:0.5rem
+    }
+}

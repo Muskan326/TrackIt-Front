@@ -1,0 +1,26 @@
+.form-edit-issue{
+    text-align: center;
+}
+#description{
+    border:thin solid;
+    padding:2rem
+}
+
+.row{
+    overflow: hidden;
+}
+.box-border{
+    margin:2rem 2rem 2rem 2rem;
+}
+.text-right{
+    background-color: #E8F8F5;
+}
+
+:host /deep/ angular-editor #insertImage-desc ,:host /deep/ angular-editor #insertVideo-desc,:host /deep/ angular-editor #link-desc,:host /deep/ angular-editor #unlink-desc{
+    display: none;
+}
+
+.btn, .btn:hover{
+    color: #fff;
+    margin:1rem ;
+}

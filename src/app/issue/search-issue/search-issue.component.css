@@ -1,0 +1,30 @@
+.table-hover{
+    background-color: #E8F8F5;
+    padding:  1rem 0rem 1rem 0rem ;
+    margin:4rem 2rem 2rem 2rem;
+
+}
+.searchView{
+    overflow: hidden;
+}
+
+td{
+    padding:1rem 0rem 1rem 0rem;
+}
+
+.searchBar{
+    font-size:1.5rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.pagination {
+    position: relative;
+    bottom:0px;
+    /* right: 40%; */
+    left: 25%;
+  }
+
+
+
+

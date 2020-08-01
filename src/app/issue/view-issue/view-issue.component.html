@@ -1,0 +1,108 @@
+  <div class="view">
+  <div class="row">
+  <div class="col-md-8 col-sm-11 box-border text-center">
+  <h2><span>Title</span></h2>
+  <h1>{{issue.title|uppercase}}</h1>
+  <h2><span>Description</span></h2>
+  <p id="description"></p>
+  <h2><span>State</span></h2>
+  <h4>{{issue.state}}</h4>
+  <h2><span>All Comments</span></h2>
+  <h4 *ngIf="allComments.length==0 ||allComments=='No Comments'">No Comments To show</h4>
+  <table *ngIf="allComments!='No Comments'" class="table  table-success">
+    <thead>
+      <tr>
+        <th>Comment</th>
+        <th>Added By</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let each of allComments"><td style="width:50%">{{each.comment}}</td><td style="width:25%">{{each.userId}}</td><td style="width:25%">{{each.date|date}}</td></tr>
+  </table>
+  <h2><span>All Attachments</span></h2>
+  <h4 *ngIf="issue.files.length==0">No Attachments To show</h4>
+  <table class="table  table-success">
+    <tr *ngFor="let each of issue.files"><td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{each.key}}">{{each.name}}</a></td></tr>
+  </table>
+
+  <div *ngIf=(isAuthor)  class="row">
+    <div class="col-md-3">
+        <a class="btn btn-dark" [routerLink]="['/edit',issue.issueId]">Edit Issue</a>
+    </div>
+    <div class="col-md-3">
+        <a type="button" class="btn  btn-dark "  (click)="openModal(templatedel)">Delete Issue</a>
+        <ng-template #templatedel>
+          <div class="modal-body text-center">
+            <p>Do you want to delete the Issue?</p>
+            <button type="button" class="btn btn-dark" (click)="confirmdel()" >Yes</button>
+            <button type="button" class="btn btn-dark" (click)="decline()" >No</button>
+          </div>
+        </ng-template>  
+    </div>
+    <div *ngIf=!(isWatcher) class="col-md-3">
+        <a class="btn btn-dark" on-click="openModal(templatewatch)" >Add to Watchers</a>
+        <ng-template #templatewatch>
+            <div class="modal-body text-center">
+              <p>Do you want to add yourself to Watchers?</p>
+              <a type="button" class="btn btn-dark" (click)="confirmwatch()" >Yes</a>
+              <a type="button" class="btn btn-dark" (click)="decline()" >No</a>
+            </div>
+          </ng-template>
+    </div>
+    <div *ngIf=(isWatcher) class="col-md-3">
+      <a class="btn btn-dark" on-click="openModal(templatewatchRemove)" >Remove From Watchers</a>
+      <ng-template #templatewatchRemove>
+          <div class="modal-body text-center">
+            <p>Do you want to remove yourself to Watchers?</p>
+            <a type="button" class="btn btn-dark" (click)="confirmwatchremove()" >Yes</a>
+            <a type="button" class="btn btn-dark" (click)="decline()" >No</a>
+          </div>
+        </ng-template>
+  </div>
+    <div class="col-md-3">
+        <a class="btn btn-dark" on-click="goBack()" >Go Back</a>
+    </div>
+    </div>
+
+
+
+
+    <div *ngIf=!(isAuthor)  class="row">
+        <div class="col-md-4">
+            <a class="btn btn-dark" [routerLink]="['/edit',issue.issueId]">Edit Issue</a>
+        </div>
+        <div *ngIf=!(isWatcher) class="col-md-4">
+            <a class="btn btn-dark" on-click="openModal(template)"  >Add to Watchers</a>
+            <ng-template #template>
+                <div class="modal-body text-center">
+                  <p>Do you want to add yourself to Watchers?</p>
+                  <a type="button" class="btn btn-dark" (click)="confirmwatch()" >Yes</a>
+                  <a type="button" class="btn btn-dark" (click)="decline()" >No</a>
+                </div>
+              </ng-template>
+        </div>
+        <div *ngIf=(isWatcher) class="col-md-4">
+          <a class="btn btn-dark" on-click="openModal(templatewatchRemove)" >Remove From Watchers</a>
+          <ng-template #templatewatchRemove>
+              <div class="modal-body text-center">
+                <p>Do you want to remove yourself from Watchers?</p>
+                <a type="button" class="btn btn-dark" (click)="confirmwatchremove()" >Yes</a>
+                <a type="button" class="btn btn-dark" (click)="decline()" >No</a>
+              </div>
+            </ng-template>
+      </div>
+        <div class="col-md-4">
+            <a class="btn btn-dark" on-click="goBack()" >Go Back</a>
+        </div>
+</div>
+  </div>
+  <div class="col-md-3 col-sm-4 watchList box-border">
+    <marquee class="text-center" behavior="slide" direction="left" >
+      <h1><b>Watchers</b></h1><br>
+  <table class="table table-dark" style="text-align: center;">
+    <tr *ngFor="let each of allWatchers"><td>{{each}}</td></tr>
+  </table>
+  </marquee>
+</div>
+</div>
+</div>

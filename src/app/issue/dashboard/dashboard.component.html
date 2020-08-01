@@ -1,0 +1,165 @@
+<div class="dashboard">
+  <div class="row user">
+    <div class=" col-6 name" style="color:#fff;">
+      <marquee behavior="slide" direction="up" scrollamount="2">Hi&nbsp;&nbsp;{{username| titlecase}}</marquee>
+    </div>
+    <div class="col-6 notify">
+      <marquee behavior="slide" direction="up" scrollamount="2"><button class="btn btn-dark btn-sm notify"
+          on-click="openModal(notification)" type="button">Notifications<span
+            class="badge badge-light">{{notifyCount}}</span></button>
+      </marquee>
+      <ng-template #notification>
+        <div class="modal-body text-center">
+          <p *ngIf="allNotify!=undefined && allNotify.length==0">No New Notifications !</p><br>
+          <table *ngIf="allNotify!=undefined && allNotify.length>0" class="table-dark">
+            <tr *ngFor="let each of allNotify" [routerLink]="['/view',each.issueId]">
+              <td style="padding:0.5rem">{{each.update}}</td>
+            </tr>
+          </table>
+          <a *ngIf="allNotify!=undefined && allNotify.length>0" type="button" class="btn btn-dark modal-button"
+            (click)="markAllRead()">Mark All As Read</a>
+          <a type="button" class="btn btn-dark modal-button" (click)="decline()">Ok</a>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-sm-12 detail-table ">
+      <tabset class="tab" [justified]="true">
+        <tab heading="Lodge A New Issue">
+          <div class="row p-0 m-0">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 lodge-Form" style="margin:2rem 1rem 0rem 1rem ">
+              <br>
+              <div class="col-md-8 form-class text-center" style="font-size:1.5rem">Lodge A New Issue</div>
+              <br><br>
+              <form class="text-left" #createForm="ngForm" (ngSubmit)="lodge()">
+                <span>Title: </span>
+                <label for="inputTittle" class="sr-only">Title</label>
+                <input type="text" name="title" id="inputTitle" class="form-control" [(ngModel)]="title"
+                  placeholder="Title" required autofocus>
+                <br>
+                <span>Description: </span>
+                <label for="inputDescription" class="sr-only">Description</label>
+                <angular-editor id="desc" [config]="editorConfig" placeholder="Text here" name="description"
+                  [(ngModel)]="description" required></angular-editor>
+                <br>
+                <span>Assign To:&nbsp;&nbsp;</span>
+                <label for="inputAssignTo" class="sr-only">Assign To</label>
+                <select name="assignedTo" [(ngModel)]="assignedTo" required>
+                  <option *ngFor="let user of allUsers" [value]="user.name">{{user.name}}</option>
+                </select>
+                <br>
+                <br>
+                <span>Attachments:&nbsp;&nbsp; </span>
+                <label class="Attachments" class="sr-only">Attachments</label>
+
+                <input class="FileUpload" (change)="onImagePicked($event)"
+                  on-click="this.toastr.infoToastr('You can select multiple Files')" placeholder="Upload Image"
+                  type="file" multiple />
+                <div *ngIf="allfiles!=undefined && allfiles.length>0">
+                  <table class="table table-bordered">
+                    <th>All Attached File List</th>
+                    <tr *ngFor="let file of allfiles">
+                      <td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{file.key}}">{{file.name}}</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <br>
+                <button class="btn btn-lg btn-dark " type="button" (click)="lodge()">Lodge
+                  Issue</button>
+              </form>
+
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+
+        </tab>
+
+        <tab heading="View All Assigned Issue">
+          <div class="row" style="text-align:center">
+            <div class="col-md-12 issues" style="font-size:22px">All Assigned Issues</div>
+            <br><br>
+          </div>
+          <div class="row" style="text-align:center" *ngIf="allAssignedIssues!=undefined && allAssignedIssues.length>0">
+            <table class="col-md-12   table-bordered table-hover" id="All-table">
+              <thead>
+                <tr>
+                  <th scope="col" on-click="sortTable(0)">Title<span class="material-icons">unfold_more</span></th>
+                  <th scope="col" on-click="sortTable(1)">Status<span class="material-icons">unfold_more</span></th>
+                  <th scope="col" on-click="sortTable(2)">Reporter<span class="material-icons">unfold_more</span></th>
+                  <th scope="col" on-click="sortTable(3)">Date<span class="material-icons">unfold_more</span></th>
+                </tr>
+                <tr>
+                  <th scope="col"><input type="text" class="input-res" placeholder="Title to search"
+                      [(ngModel)]=searchTitle></th>
+                  <th scope="col"><input type="text" class="input-res" placeholder="Status to search"
+                      [(ngModel)]=searchState></th>
+                  <th scope="col"><input type="text" class="input-res" placeholder="Reporter to search"
+                      [(ngModel)]=searchReporter></th>
+                  <th scope="col"><input type="text" class="input-res" placeholder="Date to search"
+                      [(ngModel)]=searchDate></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let issue of TableToDisplay|paginate: { id:'All-table', itemsPerPage:5, currentPage:p }"
+                  [routerLink]="['/view',issue.issueId]">
+                  <td>{{issue.title}}</td>
+                  <td>{{issue.state}}</td>
+                  <td>{{issue.author}}</td>
+                  <td>{{issue.created|date}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="col-md-2"></div>
+            <div class="pagination">
+              <pagination-controls id='All-table' (pageChange)="pageChanged($event,1)" directionLinks="true"
+                autoHide="false" responsive="true" previousLabel="Previous" nextLabel="Next"
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page">
+              </pagination-controls>
+            </div>
+            <div class=" row col-md-12" style="text-align: center;">
+              <div class="col-md-6"><button type="button" class="btn btn-dark" on-click="filterTable()">Click To
+                  search</button></div>
+              <div class="col-md-6"><button type="button" class="btn btn-dark" on-click="reset()">Reset Search</button>
+              </div>
+            </div>
+
+          </div>
+          <div *ngIf="allAssignedIssues==undefined || allAssignedIssues.length==0" class="text-center NoNotify">
+            <br><br><br>No<br><br>Issues<br><br>Assigned<br><br>To<br><br>You.</div>
+        </tab>
+      </tabset>
+    </div>
+    <div class="col-md-3 notification box-border ">
+      <marquee behavior="slide" direction="up">
+        <br>
+        <button type="button" class="btn btn-dark btn-block">
+          Notifications <span class="badge badge-light">{{notifyCount}}</span>
+        </button>
+        <br>
+        <br>
+        <p *ngIf="allNotify!=undefined && allNotify.length==0" class="NoNotify text-center">
+          No<br><br>New<br><br>Notifications.</p><br>
+        <table class="table-dark">
+          <tr *ngFor="let each of allNotify|paginate: { id:'NotifyTable', itemsPerPage:10, currentPage:pn }"
+            [routerLink]="['/view',each.issueId]">
+            <td style="padding:0.5rem">{{each.update}}</td>
+          </tr>
+        </table>
+        <div class="text-center">
+          <pagination-controls *ngIf="allNotify!=undefined && allNotify.length>0" id='NotifyTable'
+            (pageChange)="pageChanged($event,2)" directionLinks="true" autoHide="false" responsive="true"
+            previousLabel="Previous" nextLabel="Next" screenReaderPaginationLabel="Pagination"
+            screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+          <a *ngIf="allNotify!=undefined && allNotify.length>0" type="button" class="btn btn-dark modal-button"
+            style="margin-top:2rem" (click)="markAllRead()">Mark All As Read</a>
+        </div>
+      </marquee>
+    </div>
+  </div>
+</div>

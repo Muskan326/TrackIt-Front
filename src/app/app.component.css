@@ -1,0 +1,45 @@
+.navbar-brand{
+    position:absolute;
+    left:44%;
+    height:3rem;
+    font-size:x-large;
+}
+
+.title{
+    color: whitesmoke;
+    font-size: 1.5rem;
+    font-family: serif;
+    font-weight: 600;
+}
+.navbar{
+    
+    padding-top: 2rem;
+    background-color: #138D75 ;
+    height:3rem;
+}
+
+.modal-button{
+    color:white;
+    margin:0rem 2rem 0rem 2rem
+}
+.searchbar{
+    margin:0.5rem 0rem 0.5rem 0rem;
+    width:12rem;
+
+}
+#headernav{
+    background-color: #E8F8F5;
+}
+.material-icons{
+    font-size:1.5rem;
+    margin:0rem 0.5rem 0rem 0.5rem;
+}
+
+@media screen and (max-width: 400px) {
+    input.searchbar{
+     display: none;
+}
+.navbar-brand{
+    left:40%
+}
+  }

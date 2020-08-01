@@ -1,0 +1,62 @@
+  <div class="row signup">
+  
+    <div class="col-sm"></div>
+  
+    <div class="col-md-4 col-sm-6">
+  <br>
+    <div class="text-center"><h2 class="form-signin-heading">Register Now !!</h2></div>
+  
+  <form #createForm="ngForm"  (ngSubmit)="signupFunction()">
+      <span>FirstName: </span>
+  
+      <label for="inputFirstName" class="sr-only">FirstName</label>
+  
+      <input type="text" name="firstName" id="inputFirstName" class="form-control" [(ngModel)]="firstName" placeholder="FirstName" required autofocus>
+  
+      <br>
+  
+      <span>LastName: </span>
+  
+      <label for="inputLastName" class="sr-only">LastName</label>
+  
+      <input type="text" name="lastName" id="inputLastName" class="form-control" [(ngModel)]="lastName" placeholder="LastName" required>
+  
+      <br>
+  
+      <span>Mobile: </span>
+  
+      <label for="inputMobile" class="sr-only">Mobile</label>
+  
+      <input type="number" name="mobile" id="inputMobile" class="form-control" [(ngModel)]="mobile" placeholder="Mobile" required>
+  
+      <br>
+  
+      <span>Email: </span>
+  
+      <label for="inputEmail" class="sr-only">Email address</label>
+  
+      <input type="email" name="email" id="inputEmail" class="form-control" [(ngModel)]="email" placeholder="Email address" required>
+  
+      <br>
+  
+      <span>Password: </span>
+  
+      <label for="inputPassword" class="sr-only">Password</label>
+  
+      <input type="password" name="password" id="inputPassword" class="form-control" [(ngModel)]="password" placeholder="Password" required>
+  
+      <br>
+
+      <button class="btn btn-lg btn-success btn-block" type="button" (click)="signupFunction()">Sign Up</button>
+  </form>
+  <br>
+  <div class="text-center">Already Registered !  <button class="btn btn-dark" [routerLink]="['/login']">Click Here to Login</button></div>
+
+  
+    </div>
+  
+    <div class="col-sm"></div>
+  
+  </div>
+  
+  

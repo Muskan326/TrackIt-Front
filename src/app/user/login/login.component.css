@@ -1,0 +1,27 @@
+.loginView{
+    overflow: hidden;
+}
+.main{
+    border-right:0.1rem dashed
+}
+img{
+    margin-top: 5rem;
+}
+@media screen and (max-width:330px){
+        img{
+        width:100%
+    }
+    }
+
+@media screen and (max-width:576px){
+    div.main{
+        border:none;
+        width:100%;
+        margin: 0rem;
+    }
+    img{
+        margin-top: 2rem;
+    }
+}
+
+
