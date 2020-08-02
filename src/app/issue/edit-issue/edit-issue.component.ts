@@ -14,18 +14,27 @@ import { FileMgmtService } from 'src/app/file-mgmt.service';
   styleUrls: ['./edit-issue.component.css']
 })
 export class EditIssueComponent implements OnInit {
+  //getting user credentials
+  public userId=Cookie.get('userId')
+
+  //Issue variables
   public issue;
   public issueId;
   public allUsers=[];
-  public userId=Cookie.get('userId')
   public assignedId;
   public isAuthor=false;
   public newcomment;
   public allComments;
   public states=['BackLog','In-Progress','In-Test','Done']
+
+  //Modal variable
   modalRef: BsModalRef;
+  
+  //Attachment variable
   fileObj: File;
   fileURL: string;
+
+  //Rich text editor config
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -37,12 +46,18 @@ export class EditIssueComponent implements OnInit {
 
   ngOnInit(){
    
+
+    //Checking if user lodged in
     if(this.userId==null||this.userId==undefined){
       this.route.navigate(['/login'])
     }
 
+
+    //getting issue id
     this.issueId=this._router.snapshot.paramMap.get('issueId');
 
+
+    //Getting issue details
     this.serv.getIssueDetails(this.issueId).subscribe(
       data=>{
         if(data["status"]==200){
@@ -69,6 +84,8 @@ export class EditIssueComponent implements OnInit {
       }
     )
    
+
+    //getting user list
     this.serv.getAllUsers().subscribe(
       result=>{
         let all=result["data"]
@@ -106,6 +123,7 @@ export class EditIssueComponent implements OnInit {
   }
 
 
+  //Editting the issue 
   public EditIssue(){  
     let a=this.allUsers.findIndex(x => x.name === this.issue.assignedTo);
     if(a==-1){
@@ -130,23 +148,30 @@ export class EditIssueComponent implements OnInit {
   }
 
 
+  //Opening a modal
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
  
+  //confirm to edit
   confirmEdit(): void {
     this.EditIssue()
     this.modalRef.hide();
   }
  
+  //Close a modal
   decline(): void {
     this.modalRef.hide();
   }
 
+
+  //Going back to previous page
   public goBack(){
     this.location.back();
   }
 
+
+  //saving attachment
   public onImagePicked(event: Event): void {
     let a=(event.target as HTMLInputElement).files
     this.toastr.infoToastr("Hit Lodge button after you see the list of files attached")
@@ -173,6 +198,8 @@ export class EditIssueComponent implements OnInit {
     
   }
 
+
+  //delete a comment
   deleteComment(commentId){
     this.serv.deleteComment(commentId).subscribe(
       data=>{
@@ -186,6 +213,8 @@ export class EditIssueComponent implements OnInit {
   }
 
 
+
+  //delete an attachment
   public deleteFile(FileKey){
     let data={
       key:FileKey
@@ -218,6 +247,8 @@ export class EditIssueComponent implements OnInit {
     )
   }
 
+
+  //.Adding a comment
   public addComment(){
 
     let a=this.allUsers.findIndex(x => x.userId === this.userId);

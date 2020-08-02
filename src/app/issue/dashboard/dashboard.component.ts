@@ -14,25 +14,38 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class DashboardComponent implements OnInit {
 
+
+  // getting user credentials
   public username=Cookie.get('userName');
+  public userId = Cookie.get('userId');
+
+  //Lodge issue variables
   public title;
   public description;
   public assignedTo = false;
   public comments;
   public allAssignedIssues;
-  public userId = Cookie.get('userId');
   public allUsers = [];
   public state='Backlog';
+
+  //pagination variable
   p = 1;
   pn=1;
-  public titleSearch;
+
+  //notification variable
   allNotify;
   notifyCount = 0;
+
+  //file variable
   fileObj: File;
   fileURL: string;
   allfiles = [];
   selectedFiles: FileList;
+
+  //modal variable
   modalRef: BsModalRef;
+
+  //filter variable
   public searchTitle;
   public searchState;
   public searchReporter;
@@ -40,6 +53,7 @@ export class DashboardComponent implements OnInit {
   public searchText;
   searchDate: any;
 
+  //text editor config
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -54,6 +68,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
 
     Cookie.set('dir', "asc")
+
+    //checking if user lodged in
     if(this.userId==null){
       this.route.navigate(['/login'])
     }
@@ -119,10 +135,13 @@ export class DashboardComponent implements OnInit {
     this.searchDate="";
   }
 
+
+  //Open a modal
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
 
+  //mark all notification as read
   markAllRead() {
     this.serv.markAllread(this.userId).subscribe(
       data => {
@@ -138,10 +157,13 @@ export class DashboardComponent implements OnInit {
     )
   }
 
+  //close a modal
   decline(): void {
     this.modalRef.hide();
   }
 
+
+  //uploading an attachment
   public onImagePicked(event: Event): void {
     let a = (event.target as HTMLInputElement).files
     if (a.length > 0) {
@@ -172,10 +194,14 @@ export class DashboardComponent implements OnInit {
 
   }
 
+
+  //going to search page
   public goToSearch(searchText) {
     this.route.navigate(['/search', searchText])
   }
 
+
+  //lodging a new issue
   public lodge() {
     let validateInput = () => {
       return new Promise((resolve, reject) => {
@@ -277,6 +303,8 @@ export class DashboardComponent implements OnInit {
    }
   }
 
+
+  //Sorting the assigned issue table
   public sortTable = (n) => {
     var table = this.allAssignedIssues;
     var swap = [];
@@ -313,6 +341,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+
+//filtering the assigned issue table
   public filterTable() {
     var table = this.allAssignedIssues;
     var a, filterText;

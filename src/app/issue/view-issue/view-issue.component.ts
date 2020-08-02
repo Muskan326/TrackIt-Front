@@ -12,22 +12,26 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./view-issue.component.css']
 })
 export class ViewIssueComponent implements OnInit {
+//getting user credentials
+  public userId=Cookie.get('userId');
 
+  //issue variables
   public issue;
   public issueId;
   public isAuthor;
   public allComments;
-  public userId=Cookie.get('userId');
   public allUsers=[];
   public isWatcher=false;
   public allWatchers;
+
+  //Modal variable
   modalRef: BsModalRef;
 
   constructor(private serv:IssueHttpService,private route:Router,private _route:ActivatedRoute, private toastr:ToastrManager,
     public location:Location,private modalService: BsModalService) { }
 
   ngOnInit(){
-    
+    //Checking if user logged in 
     if(this.userId==null){
       this.route.navigate(['/login'])
     }
@@ -144,7 +148,7 @@ export class ViewIssueComponent implements OnInit {
     
   }
 
-
+//Delete an issue
   public deleteIssue(){
     this.serv.deleteIssue(this.issueId).subscribe(
       data=>{
@@ -159,35 +163,45 @@ export class ViewIssueComponent implements OnInit {
     )
   }
 
-
+//open a modal
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
  
+
+  //confirm to delete issue 
   confirmdel(): void {
     this.deleteIssue()
     this.modalRef.hide();
   }
  
+
+  //.confirm to add to watch
   confirmwatch(): void {
     this.addTowatch()
     this.modalRef.hide();
   }
 
+
+  //confirm to remove from watch
   confirmwatchremove(){
     this.removeFromWatch();
     this.modalRef.hide();
   }
 
-
+//closing a modal
   decline(): void {
     this.modalRef.hide();
   }
 
+
+  //going back to previous page
 public goBack(){
   this.location.back();
 }
 
+
+//adding to watch list
 public addTowatch(){
   this.serv.addToWatch(this.issueId,this.userId).subscribe(
     data=>{
@@ -207,11 +221,8 @@ public addTowatch(){
 
 };
 
-public watchers(){
 
-}
-
-
+//remove user from watch list
 public removeFromWatch(){
   this.serv.removeFromWatch(this.issueId,this.userId).subscribe(
     data=>{
@@ -230,20 +241,5 @@ public removeFromWatch(){
   )
 }
 
-
-public deleteComment(id){
-  console.log(id)
-  this.serv.deleteComment(id).subscribe(
-    data=>{
-      if(data["status"]==200){
-        this.toastr.successToastr("Comment Deleted")
-        window.location.reload()      }
-      else{
-        this.toastr.errorToastr("Some Error Occured. Try Again")
-      }
-    },
-    error=>{}
-  )
-}
 
 }

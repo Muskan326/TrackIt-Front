@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
  }
 
+
+ //Login for registered user
   public loginFunction(){
     if (!this.email) {
       this.toastr.errorToastr('enter email')
@@ -82,6 +84,8 @@ export class LoginComponent implements OnInit {
   }
 }
 
+
+//Login for social user
 signInWithGoogle(): void {
  
   let isCalled = false;

@@ -4,6 +4,8 @@
     <div class="col-md-6 col-sm-11 box-border">
       <h2 class="form-edit-issue">Edit The Issue</h2>
       <br>
+
+      <!-- Editting for issue reporters -->
       <form  *ngIf=(isAuthor) #createForm="ngForm" (ngSubmit)="EditIssue()">
 
         <span>Title: </span>
@@ -93,7 +95,7 @@
 
       
 
-
+      <!-- Editting for non reporters -->
       <form  *ngIf=(!isAuthor) #createForm="ngForm" (ngSubmit)="EditIssue()">
 
         <span>Title: </span>

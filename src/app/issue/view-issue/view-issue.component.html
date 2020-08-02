@@ -1,6 +1,8 @@
   <div class="view">
   <div class="row">
   <div class="col-md-8 col-sm-11 box-border text-center">
+
+    <!-- Issue details -->
   <h2><span>Title</span></h2>
   <h1>{{issue.title|uppercase}}</h1>
   <h2><span>Description</span></h2>
@@ -25,6 +27,8 @@
     <tr *ngFor="let each of issue.files"><td><a href="https://trackit-docs-bucket-public.s3.amazonaws.com/{{each.key}}">{{each.name}}</a></td></tr>
   </table>
 
+
+  <!-- Buttons for reporter -->
   <div *ngIf=(isAuthor)  class="row">
     <div class="col-md-3">
         <a class="btn btn-dark" [routerLink]="['/edit',issue.issueId]">Edit Issue</a>
@@ -66,7 +70,7 @@
 
 
 
-
+<!-- buttons for non reporter -->
     <div *ngIf=!(isAuthor)  class="row">
         <div class="col-md-4">
             <a class="btn btn-dark" [routerLink]="['/edit',issue.issueId]">Edit Issue</a>
@@ -96,6 +100,8 @@
         </div>
 </div>
   </div>
+
+  <!-- watch list -->
   <div class="col-md-3 col-sm-4 watchList box-border">
     <marquee class="text-center" behavior="slide" direction="left" >
       <h1><b>Watchers</b></h1><br>

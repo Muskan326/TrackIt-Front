@@ -10,13 +10,15 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
   styleUrls: ['./search-issue.component.css']
 })
 export class SearchIssueComponent implements OnInit {
+
+  //getting user credentrials
+  public userId = Cookie.get('userId')
+
+
+  //table variables
   public allIssues;
   public p = 1;
   public searchText;
-  public htmlContent;
-  public userId = Cookie.get('userId')
-  public dataSource
-  public displayedColumns;
 
   constructor(private serv: IssueHttpService, private route: Router, private toastr: ToastrManager, private _route: ActivatedRoute) {
 
@@ -24,14 +26,18 @@ export class SearchIssueComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    //checking if user logged in
     if(this.userId==null){
       this.route.navigate(['/login'])
     }
+
+    //getting search text
     this.searchText = this._route.snapshot.paramMap.get('searchText');
     if (this.searchText == "undefined") {
       this.searchText = ""
     }
+
+    //Getting all issues
     this.serv.getAllIssues().subscribe(
       data => {
         this.allIssues = data["data"]
@@ -56,6 +62,8 @@ export class SearchIssueComponent implements OnInit {
   }
 
 
+
+  //Sorting the table
   public sortTable = (n) => {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("My-Table")
@@ -96,31 +104,9 @@ export class SearchIssueComponent implements OnInit {
 
 
 
-
+//page change for pagination
   pageChanged(event) {
     this.p = event
   }
-
-  public logout = () => {
-    this.serv.logout(this.userId).subscribe(
-      data => {
-        if (data["status"] == 200) {
-          Cookie.deleteAll()
-          this.toastr.successToastr("User Logout Successful")
-          this.route.navigate(['/login'])
-        }
-        else if (data["status"] == 404) {
-          this.toastr.errorToastr(data["message"])
-        }
-        else {
-          this.toastr.errorToastr("Some Error Occured")
-        }
-      },
-      error => {
-        this.toastr.errorToastr("Some Error Occured. Try Again")
-      }
-    )
-  }
-
 
 }

@@ -28,9 +28,14 @@ export class SignupComponent implements OnInit {
   ngOnInit(){
   }
 
+
+  //navigate to login page
   public goToSignIn(){
       this.router.navigate(['/login'])
   }
+
+
+  //registering a new user
   public signupFunction(){
     if (!this.firstName) {
       this.toastr.errorToastr('Enter first name')

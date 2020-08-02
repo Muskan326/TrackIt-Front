@@ -14,6 +14,7 @@ export class Error404Component implements OnInit {
 
   ngOnInit(): void {
 
+    // Checking if user logged in
     if(this.userId==null || this.userId==undefined){
       this.route.navigate(['/login'])
     }

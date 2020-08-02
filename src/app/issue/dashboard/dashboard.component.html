@@ -1,9 +1,11 @@
 <div class="dashboard">
   <div class="row user">
     <div class=" col-6 name" style="color:#fff;">
+      <!-- username navbar -->
       <marquee behavior="slide" direction="up" scrollamount="2">Hi&nbsp;&nbsp;{{username| titlecase}}</marquee>
     </div>
     <div class="col-6 notify">
+      <!-- Notification Button -->
       <marquee behavior="slide" direction="up" scrollamount="2"><button class="btn btn-dark btn-sm notify"
           on-click="openModal(notification)" type="button">Notifications<span
             class="badge badge-light">{{notifyCount}}</span></button>
@@ -11,6 +13,7 @@
       <ng-template #notification>
         <div class="modal-body text-center">
           <p *ngIf="allNotify!=undefined && allNotify.length==0">No New Notifications !</p><br>
+          <!-- Notification Modal -->
           <table *ngIf="allNotify!=undefined && allNotify.length>0" class="table-dark">
             <tr *ngFor="let each of allNotify" [routerLink]="['/view',each.issueId]">
               <td style="padding:0.5rem">{{each.update}}</td>
@@ -26,6 +29,7 @@
   <div class="row">
     <div class="col-md-8 col-sm-12 detail-table ">
       <tabset class="tab" [justified]="true">
+        <!-- Issue lodge tab -->
         <tab heading="Lodge A New Issue">
           <div class="row p-0 m-0">
             <div class="col-md-3"></div>
@@ -77,7 +81,7 @@
           </div>
 
         </tab>
-
+        <!-- Assigned Issue Tab -->
         <tab heading="View All Assigned Issue">
           <div class="row" style="text-align:center">
             <div class="col-md-12 issues" style="font-size:22px">All Assigned Issues</div>
@@ -129,6 +133,8 @@
             </div>
 
           </div>
+
+          <!-- Notification side bar -->
           <div *ngIf="allAssignedIssues==undefined || allAssignedIssues.length==0" class="text-center NoNotify">
             <br><br><br>No<br><br>Issues<br><br>Assigned<br><br>To<br><br>You.</div>
         </tab>
